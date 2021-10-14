@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Add Pembelian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="layout">
+    <h2 class="text-center">Form Tambah Pembelian</h2>
+    <div class="box">
+        <form th:action="@{/pembelian/tambah/}"th:object="${pembelian}" method = "POST">
+            <div class="field" >Nama Admin</div>
+            <input required class="form-control"  type="text" name="namaAdmin" th:value="*{namaAdmin}"/>
+            <br>
+            <div class="field">Pembeli</div>
+            <select class="form-control" name="member.id" th:field="*{member.namaMember}">
+                <option th:each="member : ${listMember}"
+                        th:value="${member.id}"
+                        th:text="${member.namaMember}">
+                </option>
+            </select>
+            <br>
+            <div class="field left">
+                Metode Pembayaran
+            </div>
+            <div class="form-check">
+                <input type="radio" id="tunai"  th:value="1" th:checked="${pembelian.isCash == 1} ? 'checked'" >
+                <label class="form-check-label" for="tunai">
+                    Tunai
+                </label>
+            </div>
+            <div class="form-check">
+                <input  type="radio" id="cicil"  th:value="0"  th:checked="${pembelian.isCash == 0} ? 'checked'">
+                <label class="form-check-label" for="cicil">
+                    Cicil
+                </label>
+            </div>
+            <br>
+            <h3 class="left">Daftar Barang</h3>
+            <table>
+                <tr th:each="listPembelianBarang, iterationStatus : *{listPembelianBarang}">
+                    <td>
+                        <div class="field left">
+                            Nama Barang
+                        </div>
+                        <select th:field="*{listPembelianBarang[__${iterationStatus.index}__].barang}">
+                            <option th:each="barang : ${allBarang}"
+                                    th:value="${barang.id}"
+                                    th:text="${barang.namaBarang}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="field">Qty</div>
+                        <input required class="form-control"  type="number" th:field="*{listPembelianBarang[__${iterationStatus.index}__].quantity}" th:value="${pembelianBarang.quantity}"/>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" th:value="${iterationStatus.index}" name="deleteRow" type="submit">Delete</button>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary" name="addPembelianBarang">Tambah row</button>
+
+
+            <div class="kanan">
+                <a th:href="@{/}" class="btn" style="border-color: #ffc107"> Batal </a>
+                <button type="submit" class="btn text-light" name="save" style="background-color: #ffc107">Simpan</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+<style>
+
+    .layout{
+        /*padding-top: 50px;*/
+        padding-left: 450px;
+        padding-right: 450px;
+        padding-bottom: 50px;
+    }
+
+
+    .box{
+        box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding-right: 10%;
+        padding-left: 10%;
+        padding-top: 10%;
+    }
+
+    .tab{
+        text-align: right;
+    }
+
+    .field{
+        text-align: left;
+        color: #4e555b;
+    }
+
+    .left{
+        text-align: left;
+    }
+</style>
+</html>

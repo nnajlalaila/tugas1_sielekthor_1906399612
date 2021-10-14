@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form Add Barang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<style>
+    .layout{
+        text-align: center;
+        padding-top: 50px;
+        padding-left: 450px;
+        padding-right: 450px;
+        padding-bottom: 50px;
+    }
+
+    .box{
+        box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding-right: 7%;
+        padding-left: 7%;
+    }
+
+    .tab{
+        text-align: right;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 7px 15px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .field{
+        text-align: left;
+        color: #4e555b;
+    }
+</style>
+
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<h2 class="text-center">Form Tambah Barang</h2>
+<div class="layout">
+    <div class="box">
+        <form th:action="@{/barang/tambah}"th:object="${barang}" method = "POST">
+            <br><br>
+            <div class="field">Nama Barang</div>
+            <input type="text" name="namaBarang"/>
+            <br>
+            <div class="field">Kode Barang</div>
+            <input type="text" name="kodeBarang"/>
+            <br>
+            <div class="field">Merk Barang</div>
+            <input type="text" name="merkBarang"/>
+            <br>
+            <div class="field">Stok Barang</div>
+            <input type="text" name="stok"/>
+            <br>
+            <div class="field">Garansi Toko</div>
+            <input type="text" name="jumlahGaransi"/>
+            <br>
+            <div class="field">Deskripsi</div>
+            <input type="text" name="deskripsiBarang"/>
+            <br>
+            <div class="field">Tipe Barang</div>
+            <select class="form-control" name="tipe.id">
+                <option th:each="tipe : ${listTipe}"
+                        th:value="${tipe.id}"
+                        th:text="${tipe.nama}">
+                </option>
+            </select>
+            <br>
+            <div class="field">Harga</div>
+            <input type="text" name="hargaBarang"/>
+            <br><br>
+            <div class="tab">
+                <a th:href="@{/barang/}" class="btn" c> Batal </a>
+                <button type="submit" class="btn text-light" style="background-color: #ffc107">Tambah</button>
+            </div>
+            <br><br>
+        </form>
+    </div>
+</div>
+</body>
+</html>

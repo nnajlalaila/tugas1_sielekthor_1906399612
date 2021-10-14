@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ubah Data Barang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    .layout{
+        text-align: center;
+        padding-top: 50px;
+        padding-left: 450px;
+        padding-right: 450px;
+        padding-bottom: 50px;
+    }
+    .judul{
+        font-size: 27px;
+        color: black;
+        font-weight: 400;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .box{
+        box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding-right: 7%;
+        padding-left: 7%;
+    }
+
+    .kanan{
+        text-align: right;
+        padding-bottom: 5%;
+    }
+
+
+    input, select {
+        width: 100%;
+        padding: 7px 15px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .namafield{
+        text-align: left;
+        color: #4e555b;
+    }
+
+
+    .isi{
+        padding-right: 7%;
+        padding-left: 7%;
+        background-color: #ececec;
+    }
+
+    .disable{
+        background-color: #d3d3d3;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="layout">
+    <div class="judul">Form Ubah Barang </h2></div>
+
+    <div class="shadow">
+        <form th:action="@{/barang/ubah}"th:object="${barang}" method = "POST">
+            <div class="isi">
+                <br><br>
+                <div class="namafield">Nama Barang</div>
+                <input type="text" name="namaBarang" th:value="*{namaBarang}"/>
+                <br>
+
+                <div class="namafield">Kode Barang</div>
+                <input type="text" name="kodeBarang" th:value="*{kodeBarang}" class="disable" disabled/>
+                <br>
+
+                <div class="namafield">Merk Barang</div>
+                <input type="text" name="merkBarang" th:value="*{merkBarang}" class="disable" disabled/>
+                <br>
+
+                <div class="namafield">Stok Barang</div>
+                <input type="number" name="stok" th:value="*{stok}"/>
+                <br>
+
+                <div class="namafield">Garansi Toko</div>
+                <input type="number" name="jumlahGaransi" th:value="*{jumlahGaransi}"/>
+                <br>
+
+                <div class="namafield">Deskripsi</div>
+                <input type="text" name="deskripsiBarang" th:value="*{deskripsiBarang}"/>
+                <br>
+
+                <div class="namafield">Tipe Barang</div>
+                    <select name="tipe.id" th:field="*{tipe.id}" class="disable" disabled>
+                        <option th:each="tipe : ${listTipe}"
+                                th:value="${tipe.id}"
+                                th:text="${tipe.nama}">
+                        </option>
+                    </select>
+
+                <div class="namafield">Harga</div>
+                <input type="number" name="hargaBarang" th:value="*{hargaBarang}"/>
+                <br>
+
+                <div class="kanan">
+                    <a th:href="@{/}" class="btn" style="border-color: #ffc107"> Batal </a>
+                    <button type="submit" class="btn text-light" style="background-color: #ffc107">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

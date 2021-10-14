@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View All Barang</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+  .layout{
+    text-align: center;
+    padding-top: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  .button{
+    text-align: left;
+    margin-top: 80px;
+    margin-left: 100px;
+    color: black;
+    font-size: 18px;
+  }
+
+
+  .kembali{
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 100px;
+    color: #ffc107;
+    font-size: 18px;
+    border-color: #ffc107;
+  }
+
+  .judul{
+    background-color:#ffc107;
+    font-size: 18px;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+</style>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<section>
+  <h2 class="text-center" style="margin-top: 60px; margin-bottom: -30px">Daftar Member</h2>
+  <td><a type="submit" class="btn btn-sm button rounded" th:href="@{/member/tambah}" style="background-color: #ffc107 ">+Tambah Member</a></td>
+  <div>
+    <div class="layout">
+      <table class="table">
+        <thead>
+        <tr class="judul">
+          <th>No</th>
+          <th>Nama</th>
+          <th>Tanggal Lahir</th>
+          <th>Tanggal Pendaftaran</th>
+          <th>Jenis Kelamin</th>
+          <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="member, iterationStatus : ${listMember}"
+            th:style="${iterationStatus.even} ? 'background-color: #f7f7f7':'background-color: #d3d3d3'">
+          <td th:text="${iterationStatus.count}"></td>
+          <td th:text="${member.namaMember}"></td>
+          <td th:text="${#dates.format(member.tanggalLahir, 'yyyy-MM-dd')}"></td>
+          <td th:text="${member.tanggalPendaftaran}"></td>
+          <td  th:text="${member.jenisKelamin} == 0 ? 'Laki-laki' : 'Perempuan' "></td>
+
+          <td>
+            <div class="align-items-center">
+              <a th:href="@{/member/ubah/}+${member.id}" class="btn btn-primary">Ubah</a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/" class="btn btn-sm kembali">Kembali</a>
+  </div>
+</section>
+</body>
+</html>

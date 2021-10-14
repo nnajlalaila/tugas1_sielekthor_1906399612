@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Detail Pembelian</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+  .layout{
+    text-align: center;
+    padding-top: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  .button{
+    text-align: left;
+    margin-top: 80px;
+    margin-left: 100px;
+    color: black;
+    font-size: 18px;
+  }
+
+  .kembali{
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 100px;
+    color: #ffc107;
+    font-size: 18px;
+    border-color: #ffc107;
+  }
+
+  .judul{
+    background-color:#ffc107;
+    font-size: 18px;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .ratakiri{
+    text-align: left;
+  }
+
+  .ratakanan{
+    text-align: right;
+  }
+
+</style>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container">
+  <div class="layout m-5">
+    <h2 class="judul">Detail Pembelian</h2>
+    <form th:action="@{/pembelian/hapus}" th:object="${pembelian}" method="POST">
+      <input type="hidden" th:field="*{id}"/>
+      <input type="hidden" th:field="*{noInvoice}"/>
+      <input type="hidden" th:field="*{total}"/>
+      <input type="hidden" th:field="*{member}"/>
+      <input type="hidden" th:field="*{tanggalPembelian}"/>
+      <input type="hidden" th:field="*{namaAdmin}"/>
+      <input type="hidden" th:field="*{isCash}"/>
+      <input type="hidden" th:field="*{listPembelianBarang}"/>
+
+    <table class="table" style="margin-top: -8px">
+      <tbody>
+      <tr style="border-bottom-color: white">
+        <td th:text="'No Invoice' " class="ratakiri"></td>
+        <td th:text="': '+ *{noInvoice}" class="ratakiri"></td>
+        <td></td>
+      </tr>
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Total Harga' " class="ratakiri"></td>
+        <td th:text="': '+ *{total}" class="ratakiri"></td>
+        <td></td>
+      </tr>
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Member' " class="ratakiri"></td>
+        <td th:text="': '+ *{member.namaMember}" class="ratakiri"></td>
+        <td></td>
+      </tr>
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Jumlah Barang' " class="ratakiri"></td>
+        <td th:text="': '+ *{listPembelianBarang.size()}" class="ratakiri"></td>
+        <td></td>
+      </tr>
+
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Tanggal Pembelian' " class="ratakiri"></td>
+        <td th:text="': '+ ${#dates.format(pembelian.tanggalPembelian, 'EEE, dd MMM yyyy')}"  class="ratakiri"></td>
+        <td></td>
+      </tr>
+
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Nama Admin' " class="ratakiri"></td>
+        <td th:text="': '+ *{namaAdmin}" class="ratakiri"></td>
+        <td></td>
+      </tr>
+
+      <tr  style="border-bottom-color: white">
+        <td th:text="'Metode Pembayaran' " class="ratakiri"></td>
+        <td th:text="${pembelian.isCash}==0? ' : Cicilan':' : Tunai'" class="ratakiri"></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="d-flex flex-row-reverse">
+      <input type="submit" class="btn text-light m-2 btn btn-danger" value="Hapus"/>
+    </div>
+    <br><br>
+    </form>
+
+    <h2 class="text-center">Daftar Barang</h2>
+    <div class="layout">
+      <table class="table">
+        <thead>
+        <tr class="judul">
+          <th>No</th>
+          <th>Nama</th>
+          <th>Merk</th>
+          <th>Tipe</th>
+          <th>Tanggal Garansi</th>
+          <th>Harga</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="pb, iterationStatus : ${listPembelianBarang}"
+            th:style="${iterationStatus.even} ? 'background-color: #f7f7f7':'background-color: #d3d3d3'">
+          <td th:text="${iterationStatus.count}" ></td>
+          <td th:text="${pb.barang.namaBarang}"></td>
+          <td th:text="${pb.barang.merkBarang}"></td>
+          <td th:text="${pb.barang.tipe.nama}"></td>
+          <td th:text="${pb.tanggalGaransi}"></td>
+          <td th:text="${pb.barang.hargaBarang}"></td>
+          <td th:text="${pb.quantity}"></td>
+          <td th:text="${pb.pembelian.total}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <a href="/pembelian" class="btn btn-sm kembali">Kembali</a>
+  <br><br>
+</div>
+</body>
+</html>

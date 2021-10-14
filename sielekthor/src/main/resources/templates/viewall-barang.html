@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View All Barang</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+  .layout{
+    text-align: center;
+    padding-top: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  .button{
+    text-align: left;
+    margin-top: 80px;
+    margin-left: 100px;
+    color: black;
+    font-size: 18px;
+  }
+
+
+  .kembali{
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 100px;
+    color: #ffc107;
+    font-size: 18px;
+    border-color: #ffc107;
+  }
+
+  .judul{
+    background-color:#ffc107;
+    font-size: 18px;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+</style>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<section>
+  <h2 class="text-center" style="margin-top: 60px; margin-bottom: -30px">Daftar Barang</h2>
+  <td><a type="submit" class="btn btn-sm button" th:href="@{/barang/tambah}" style="background-color: #ffc107 ">+Tambah Barang</a></td>
+  <div>
+    <div class="layout">
+    <table class="table">
+      <thead>
+      <tr class="judul">
+        <th>No</th>
+        <th>Nama</th>
+        <th>Harga</th>
+        <th>Tipe</th>
+        <th>Stok</th>
+        <th>Aksi</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr th:each="barang, iterationStatus : ${listBarang}"
+          th:style="${iterationStatus.even} ? 'background-color: #f7f7f7':'background-color: #d3d3d3'">
+        <td th:text="${iterationStatus.count}"></td>
+        <td th:text="${barang.namaBarang}"></td>
+        <td th:text="${barang.hargaBarang}"></td>
+        <td th:text="${barang.tipe.nama}"></td>
+        <td th:text="${barang.stok}"></td>
+
+        <td>
+          <div class="align-items-center">
+            <a th:href="@{/barang/}+${barang.id}" class="btn btn-info">Lihat</a>
+            <a th:href="@{/barang/ubah/}+${barang.id}" class="btn btn-warning">Ubah</a>
+            <a th:href="@{#}" class="btn btn-danger">Hapus</a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
+    <a href="/" class="btn btn-sm kembali">Kembali</a>
+  </div>
+</section>
+</body>
+</html>

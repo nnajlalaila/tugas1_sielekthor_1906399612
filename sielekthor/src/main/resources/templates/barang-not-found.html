@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Barang berhasil ditambahkan</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<style>
+  .teks{
+    font-size: 50px;
+    padding-top: 10%;
+    text-align: center;
+    padding-left: 7%;
+    padding-right: 7%;
+  }
+</style>
+
+<nav th:replace="fragments/fragment :: navbar"></nav>
+
+<div class="text-center">
+  <h2 class="teks" th:text="'Barang dengan kode ' + ${idBarang} + ' tidak ditemukan'"></h2>
+  <a href="/barang/" class="btn" style="border-color:#ffc107">Kembali</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Detail Barang By Id</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+    .layout{
+        text-align: center;
+        padding-top: 20px;
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+
+    .button{
+        text-align: left;
+        margin-top: 80px;
+        margin-left: 100px;
+        color: black;
+        font-size: 18px;
+    }
+
+    .kembali{
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 100px;
+        color: #ffc107;
+        font-size: 18px;
+        border-color: #ffc107;
+    }
+
+    .judul{
+        background-color:#ffc107;
+        font-size: 18px;
+        color: black;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .ratakiri{
+       text-align: left;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container">
+    <div class="layout">
+        <h2 class="judul">Detail Barang</h2>
+        <table class="table" style="margin-top: -8px">
+            <tbody>
+            <tr>
+                <td th:text="'Nama Barang' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.namaBarang}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td th:text="'Kode Barang' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.kodeBarang}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td th:text="'Stok' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.stok}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td th:text="'Garansi Toko' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.jumlahGaransi}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td th:text="'Deskripsi' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.deskripsiBarang}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td th:text="'Tipe Barang' " class="ratakiri"></td>
+                <td th:text="': '+ ${barang.tipe.nama}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td th:text="'Harga' " class="ratakiri"></td>
+                <td th:text="': Rp '+ ${barang.hargaBarang}" class="ratakiri"></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a href="/" class="btn btn-sm kembali">Kembali</a>
+</div>
+</body>
+</html>

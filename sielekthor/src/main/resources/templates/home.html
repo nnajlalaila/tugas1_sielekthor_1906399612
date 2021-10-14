@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    .judul{
+        text-align: center;
+        margin-top: 100px;
+        padding: 7%;
+        margin-left: 80px;
+        margin-right: 80px;
+        background-color: #ffc107;
+        color: white;
+        border-radius: 10px;
+        font-size: 45px;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="d-flex justify-content-center">
+    <div class="m-4 rounded">
+        <h2 class="judul">WELCOME TO SIELEKTHOR</h2>
+        <br>
+        <h6 class="text-warning text-center">List of features:</h6>
+        <div class="d-flex justify-content-center">
+            <a th:href="@{/barang}" class="mx-2 btn btn-warning font-weight-bold">Barang</a>
+            <a th:href="@{/pembelian}" class="mx-2 btn btn-warning font-weight-bold">Pembelian</a>
+            <a th:href="@{/}" class="mx-2 btn btn-warning font-weight-bold">Fitur Pembelian</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

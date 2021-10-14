@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Form Update Member</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<style>
+  .layout{
+    padding-top: 50px;
+    padding-left: 450px;
+    padding-right: 450px;
+    padding-bottom: 50px;
+  }
+
+  .box{
+    box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding-right: 7%;
+    padding-left: 7%;
+  }
+
+  .tab{
+    text-align: right;
+  }
+
+  exlusive {
+    width: 100%;
+    padding: 7px 15px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .field{
+    text-align: left;
+    color: #4e555b;
+  }
+</style>
+
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<h2 class="text-center">Form Ubah Member</h2>
+<div class="layout">
+  <div class="box">
+    <form th:action="@{/member/ubah}"th:object="${member}" method = "POST">
+      <br><br>
+      <div class="field">Nama</div>
+      <input required class="form-control" type="text" name="namaMember" th:value="*{namaMember}"/>
+      <br>
+      <div class="field">Tanggal Lahir</div>
+      <input  required class="form-control"  type="date" name="tanggalLahir"  th:value="*{#dates.format(tanggalLahir, 'yyyy-MM-dd')}"/>
+      <br>
+      <div class="field">Tanggal Pendaftaran</div>
+      <input  required class="form-control" type="datetime-local" name="tanggalPendaftaran" th:value="${{member.tanggalPendaftaran}}"/>
+      <br>
+      Jenis Kelamin: <br>
+      <div class="form-check">
+        <input class="form-check-input radionye field" type="radio" id="Laki-laki" name="jenisKelamin" value="0" th:checked="${member.jenisKelamin == 0} ? 'checked'" disabled >
+        <label class="form-check-label" for="Laki-laki">Laki-laki</label>
+      </div>
+
+      <div class="form-check" >
+        <input class="form-check-input" type="radio" id="Perempuan" name="jenisKelamin" value="1" th:checked="${member.jenisKelamin == 1} ? 'checked'" disabled >
+        <label class="form-check-label" for="Perempuan">Perempuan</label>
+      </div>
+      <br><br>
+      <div class="d-flex justify-content-center">
+        <a th:href="@{/member/}" class="btn m-2" style="border-color: #ffc107" > Batal </a>
+        <button type="submit" class="btn text-light m-2" style="background-color: #ffc107">Tambah</button>
+      </div>
+      <br><br>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Member berhasil diubah</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<style>
+    .teks{
+        font-size: 40px;
+        padding-top: 10%;
+        text-align: center;
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+    .kembali{
+        text-align: left;
+        margin-top: 20px;
+        color: #ffc107;
+        font-size: 18px;
+        border-color: #ffc107;
+    }
+
+</style>
+
+<nav th:replace="fragments/fragment :: navbar"></nav>
+
+<div class="text-center">
+    <h2 class="teks">
+        <span th:text="'Data member '"></span>
+        <span th:text="${namaMember}" style="color: #ffc107; font-weight:bold"></span>
+        <span th:text="' dan nomor invoice menjadi '"></span>
+        <span th:text="' dan nomor invoice menjadi '"></span>
+        <span th:text="' berhasil diubah'"></span>
+    </h2>
+    <a href="/member/" class="btn btn-sm kembali">Kembali</a>
+</div>
+</body>
+</html>
