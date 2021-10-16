@@ -32,9 +32,12 @@
     <h2 class="teks">
         <span th:text="'Data member '"></span>
         <span th:text="${namaMember}" style="color: #ffc107; font-weight:bold"></span>
-        <span th:text="' dan nomor invoice menjadi '"></span>
-        <span th:text="' dan nomor invoice menjadi '"></span>
-        <span th:text="' berhasil diubah'"></span>
+        <span th:text="' berhasil diubah dan no invoice menjadi'"></span>
+        <span th:each="pembelian, iterationStatus : ${listPembelian}">
+            <span th:text="${pembelian.noInvoice}"  style="color: #ffc107;" ></span>
+            <span  th:if="${iterationStatus.index} != 0" th:text="', dan'" ></span>
+            <span  th:if="${iterationStatus.index}==${listPembelian.size-1}" th:text="'.'" ></span>
+        </span>
     </h2>
     <a href="/member/" class="btn btn-sm kembali">Kembali</a>
 </div>

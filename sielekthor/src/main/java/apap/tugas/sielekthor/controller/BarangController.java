@@ -1,5 +1,7 @@
 package apap.tugas.sielekthor.controller;
 import apap.tugas.sielekthor.model.BarangModel;
+import apap.tugas.sielekthor.model.MemberModel;
+import apap.tugas.sielekthor.model.PembelianModel;
 import apap.tugas.sielekthor.model.TipeModel;
 import apap.tugas.sielekthor.service.BarangService;
 import apap.tugas.sielekthor.service.TipeService;
@@ -92,4 +94,67 @@ public class BarangController {
         model.addAttribute("kodeBarang", barang.getKodeBarang());
         return "update-barang";
     }
+
+
+//    @GetMapping("/barang/cari")
+//    public String cariBarangForm(
+//            Model model
+//    ){
+//            List<BarangModel> hasil = new ArrayList<>();
+//            model.addAttribute("listBarang", hasil);
+//            model.addAttribute("listTipe", tipeService.getListTipe());
+//            return "cari-barang";
+//    }
+
+    @GetMapping(value = "/barang/cari")
+    public String cariBarang(
+            @RequestParam(required = false, value = "namaTipe") String namaTipe,
+            @RequestParam(required = false,value = "stok") String stok,
+            Model model
+    ){
+
+        List<BarangModel> hasil = new ArrayList<>();
+        List<TipeModel> listTipe = tipeService.getListTipe();
+
+        if (namaTipe != null && stok != null) {
+            hasil = barangService.cariBarang(namaTipe, stok);
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listBarang", hasil);
+            model.addAttribute("listTipe",listTipe);
+            return "cari-barang";
+        }
+
+        else if (namaTipe != null && stok == null) {
+            hasil = barangService.cariBarang(namaTipe,"false" );
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listBarang", hasil);
+            model.addAttribute("listTipe",listTipe);
+            return "cari-barang";
+        }
+
+        else if (namaTipe  == null && stok != null) {
+            hasil = barangService.cariBarangStok(stok);
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listBarang", hasil);
+            model.addAttribute("listTipe",listTipe);
+            return "cari-barang";
+        }
+        model.addAttribute("listBarang", hasil);
+        model.addAttribute("listTipe",listTipe);
+        return "cari-barang";
+
+
+    }
+
+
+
 }

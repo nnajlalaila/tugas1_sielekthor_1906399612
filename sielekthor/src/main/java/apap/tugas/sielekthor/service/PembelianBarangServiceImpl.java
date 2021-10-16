@@ -23,6 +23,7 @@ public class PembelianBarangServiceImpl implements PembelianBarangService{
 
     @Override
     public List<PembelianBarangModel> getPembelianBarangList(){
+
         return pembelianBarangDB.findAll();
     }
 

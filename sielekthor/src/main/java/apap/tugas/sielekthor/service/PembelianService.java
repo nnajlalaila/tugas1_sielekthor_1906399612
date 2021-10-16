@@ -12,6 +12,10 @@ public interface PembelianService {
     void addPembelian(PembelianModel pembelian);
     void deletePembelian(PembelianModel pembelian);
     void restokBarang(PembelianModel pembelian);
-    String getNoInvoice(PembelianModel pembelian);
-    Integer jumlah (HashMap<PembelianBarangModel, BarangModel> hashPembelianBarang);
+    String generateNoInvoice(PembelianModel pembelian);
+    List<PembelianModel> cariPembelian(Long idMember,boolean isCash);
+    List<PembelianModel> cariPembelianIsCash(boolean isCash);
+    List<PembelianModel> cariPembelianIdMember(Long idMember);
+
+
 }

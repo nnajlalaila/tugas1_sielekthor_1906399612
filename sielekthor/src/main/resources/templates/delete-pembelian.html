@@ -31,8 +31,17 @@
 <div class="text-center">
     <h2 class="teks">
         <span th:text="'Pembelian dengan dengan nomor invoice '"></span>
-        <span th:text="'NO INVOICE'" style="color: #ffc107; font-weight:bold"></span>
+        <span th:text="${noInvoice}"  style="color: #ffc107; font-weight:bold"></span>
         <span th:text="' berhasil dihapus'"></span>
+        <span th:text="' dan stok barang'"></span>
+        <span th:each="pb, iterationStatus : ${listPembelianBarang}">
+            <span th:text="${pb.barang.namaBarang}"  style="color: #ffc107;" ></span>
+            <span  th:if="${iterationStatus}==0" th:text="'bertambah menjadi'" ></span>
+            <span  th:unless="${iterationStatus} == 0" th:text="'menjadi'" ></span>
+            <span th:text="${pb.barang.stok}" style="color: #ffc107;" ></span>
+            <span  th:unless="${iterationStatus.index}==${listPembelianBarang.size-1}" th:text="','" ></span>
+            <span  th:if="${iterationStatus.index}==${listPembelianBarang.size-1}" th:text="'.'" ></span>
+        </span>
     </h2>
     <a href="/pembelian/" class="btn btn-sm kembali">Kembali</a>
 </div>

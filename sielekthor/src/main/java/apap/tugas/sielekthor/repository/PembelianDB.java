@@ -9,4 +9,6 @@ import java.util.List;
 public interface PembelianDB extends JpaRepository<PembelianModel,Long> {
     List<PembelianModel> findAll();
     PembelianModel getPembelianModelById(Long idPembelian);
+    PembelianModel findAllByMemberId(Long idMember);
+    PembelianModel findAllByIsCash(boolean iscash);
 }

@@ -10,15 +10,18 @@
 </head>
 <body>
 <nav th:replace="fragments/fragment :: navbar"></nav>
+<br><br>
 <div class="layout">
     <h2 class="text-center">Form Tambah Pembelian</h2>
     <div class="box">
         <form th:action="@{/pembelian/tambah/}"th:object="${pembelian}" method = "POST">
+            <input type="hidden" th:field="*{id}"/>
+<!--            <input type="hidden" th:field="${pembelianBarang.pembelian.id}" th:value="${pembelian.id}" />-->
             <div class="field" >Nama Admin</div>
             <input required class="form-control"  type="text" name="namaAdmin" th:value="*{namaAdmin}"/>
             <br>
             <div class="field">Pembeli</div>
-            <select class="form-control" name="member.id" th:field="*{member.namaMember}">
+            <select class="form-control"  th:field="*{member}">
                 <option th:each="member : ${listMember}"
                         th:value="${member.id}"
                         th:text="${member.namaMember}">
@@ -29,13 +32,13 @@
                 Metode Pembayaran
             </div>
             <div class="form-check">
-                <input type="radio" id="tunai"  th:value="1" th:checked="${pembelian.isCash == 1} ? 'checked'" >
+                <input type="radio" name="isCash" id="tunai"  th:value="0" th:checked="${pembelian.isCash == false} ? 'checked'" >
                 <label class="form-check-label" for="tunai">
                     Tunai
                 </label>
             </div>
             <div class="form-check">
-                <input  type="radio" id="cicil"  th:value="0"  th:checked="${pembelian.isCash == 0} ? 'checked'">
+                <input  type="radio" id="cicil"  name="isCash" th:value="1"  th:checked="${pembelian.isCash} ? 'checked'">
                 <label class="form-check-label" for="cicil">
                     Cicil
                 </label>
@@ -48,7 +51,7 @@
                         <div class="field left">
                             Nama Barang
                         </div>
-                        <select th:field="*{listPembelianBarang[__${iterationStatus.index}__].barang}">
+                        <select th:field="*{listPembelianBarang[__${iterationStatus.index}__].barang}" required class="form-control" style="width: 100%">
                             <option th:each="barang : ${allBarang}"
                                     th:value="${barang.id}"
                                     th:text="${barang.namaBarang}"></option>
@@ -63,12 +66,12 @@
                     </td>
                 </tr>
             </table>
+            <br>
             <button type="submit" class="btn btn-primary" name="addPembelianBarang">Tambah row</button>
 
-
-            <div class="kanan">
-                <a th:href="@{/}" class="btn" style="border-color: #ffc107"> Batal </a>
-                <button type="submit" class="btn text-light" name="save" style="background-color: #ffc107">Simpan</button>
+            <div class="kanan m-5 d-flex justify-content-center">
+                <a th:href="@{/}" class="btn m-2" style="border-color: #ffc107; width: 100%"> Batal </a>
+                <button type="submit" class="btn text-light m-2" name="save" style="background-color: #ffc107; width: 100%">Simpan</button>
             </div>
 
         </form>

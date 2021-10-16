@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface MemberService {
     List<MemberModel> getListMember();
+    List<MemberModel> getBestMember(List<MemberModel> allMember);
     void addMember(MemberModel member);
     void updateMember(MemberModel member);
     MemberModel getMemberById(Long id);
-
 }

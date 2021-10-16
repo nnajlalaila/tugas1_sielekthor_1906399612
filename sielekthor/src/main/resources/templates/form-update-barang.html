@@ -64,10 +64,13 @@
 <nav th:replace="fragments/fragment :: navbar"></nav>
 <div class="layout">
     <div class="judul">Form Ubah Barang </h2></div>
-
     <div class="shadow">
         <form th:action="@{/barang/ubah}"th:object="${barang}" method = "POST">
             <div class="isi">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{kodeBarang}"/>
+                <input type="hidden" th:field="*{merkBarang}"/>
+                <input type="hidden" th:field="*{tipe.id}"/>
                 <br><br>
                 <div class="namafield">Nama Barang</div>
                 <input type="text" name="namaBarang" th:value="*{namaBarang}"/>

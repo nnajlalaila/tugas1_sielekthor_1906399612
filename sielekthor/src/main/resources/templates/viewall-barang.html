@@ -46,7 +46,8 @@
 <nav th:replace="fragments/fragment :: navbar"></nav>
 <section>
   <h2 class="text-center" style="margin-top: 60px; margin-bottom: -30px">Daftar Barang</h2>
-  <td><a type="submit" class="btn btn-sm button" th:href="@{/barang/tambah}" style="background-color: #ffc107 ">+Tambah Barang</a></td>
+  <a type="submit" class="btn btn-sm button" th:href="@{/barang/tambah}" style="background-color: #ffc107 ">+Tambah Barang</a>
+  <a type="submit" class="btn btn-sm button" th:href="@{/barang/cari}" style="background-color: #ffc107; margin-left: 10px ">Filter</a>
   <div>
     <div class="layout">
     <table class="table">

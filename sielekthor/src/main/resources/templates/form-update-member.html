@@ -11,7 +11,7 @@
 <body>
 <style>
   .layout{
-    padding-top: 50px;
+    padding-top: 20px;
     padding-left: 450px;
     padding-right: 450px;
     padding-bottom: 50px;
@@ -44,10 +44,14 @@
 </style>
 
 <nav th:replace="fragments/fragment :: navbar"></nav>
+<br>
 <h2 class="text-center">Form Ubah Member</h2>
 <div class="layout">
   <div class="box">
     <form th:action="@{/member/ubah}"th:object="${member}" method = "POST">
+      <input type="hidden" th:field="*{id}"/>
+      <input type="hidden" th:field="*{jenisKelamin}"/>
+      <input type="hidden" th:field="*{listPembelian}"/>
       <br><br>
       <div class="field">Nama</div>
       <input required class="form-control" type="text" name="namaMember" th:value="*{namaMember}"/>
@@ -71,7 +75,7 @@
       <br><br>
       <div class="d-flex justify-content-center">
         <a th:href="@{/member/}" class="btn m-2" style="border-color: #ffc107" > Batal </a>
-        <button type="submit" class="btn text-light m-2" style="background-color: #ffc107">Tambah</button>
+        <button type="submit" class="btn text-light m-2" style="background-color: #ffc107">Simpan</button>
       </div>
       <br><br>
     </form>

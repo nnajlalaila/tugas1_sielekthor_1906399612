@@ -39,16 +39,14 @@ public class PembelianBarangModel implements Serializable {
     private Integer quantity;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "IdPembelian", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "IdPembelian")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private PembelianModel pembelian;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "IdBarang", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "IdBarang")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private BarangModel barang;
 
 }

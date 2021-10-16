@@ -37,14 +37,21 @@ public class PembelianServiceImpl implements PembelianService {
     }
 
     @Override
-    public String getNoInvoice(PembelianModel pembelian) {
+    public String generateNoInvoice(PembelianModel pembelian) {
         String namaMember = pembelian.getMember().getNamaMember().toUpperCase();
         int tmp = ((int) namaMember.charAt(0)) - 64;
         String intFirst = Integer.toString(tmp);
-        String namaAdmin = pembelian.getNamaAdmin();
+        String namaAdmin = pembelian.getNamaAdmin().toUpperCase();
         Date tanggalPembelian= pembelian.getTanggalPembelian();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String format = formatter.format(tanggalPembelian);
+        int bulanTahun = Integer.parseInt(format.substring(0,2)) + Integer.parseInt(format.substring(3,5));
+        int siap = bulanTahun * 5;
+        String export = Integer.toString(siap);
+
+        if(export.length() ==  2){
+            export = "0" + export;
+        }
         Boolean pembayaran = pembelian.getIsCash();
         String random = RandomString.getAlphaNumericString(2);
         String noInvoice;
@@ -55,8 +62,10 @@ public class PembelianServiceImpl implements PembelianService {
             noPembayaran = "01";
         }
 
+        System.out.println(namaMember);
+        System.out.println(namaAdmin);
         noInvoice = intFirst.substring(0, 1) + namaAdmin.toUpperCase().charAt(namaAdmin.length()-1)
-                + format.substring(0,2) + format.substring(3,5) + noPembayaran+ random;
+                + format.substring(0,2) + format.substring(3,5) + noPembayaran+ export+ random;
 
         return noInvoice;
     }
@@ -69,12 +78,44 @@ public class PembelianServiceImpl implements PembelianService {
     }
 
     @Override
-    public Integer jumlah (HashMap<PembelianBarangModel, BarangModel> hashPembelianBarang){
-        int total = 0;
-        for (PembelianBarangModel i : hashPembelianBarang.keySet()) {
-            total += i.getQuantity() * hashPembelianBarang.get(i).getHargaBarang();
+    public List<PembelianModel> cariPembelian(Long idMember,boolean isCash) {
+        List<PembelianModel> hasilCariPembelian = new ArrayList<>();
+        List<PembelianModel> allPembelian = getListPembelian();
+
+        for (PembelianModel pembelian :allPembelian) {
+            if(pembelian.getMember().getId().equals(idMember)){
+                if(pembelian.getIsCash().equals(isCash)){
+                    hasilCariPembelian.add(pembelian);
+                }
+            }
         }
-        return total;
+        return  hasilCariPembelian;
+    }
+
+    @Override
+    public List<PembelianModel> cariPembelianIsCash(boolean isCash) {
+        List<PembelianModel> hasilCariPembelian = new ArrayList<>();
+        List<PembelianModel> allPembelian = getListPembelian();
+
+        for (PembelianModel pembelian : allPembelian) {
+            if(pembelian.getIsCash().equals(isCash)){
+                    hasilCariPembelian.add(pembelian);
+            }
+        }
+        return  hasilCariPembelian;
+    }
+
+    @Override
+    public List<PembelianModel> cariPembelianIdMember(Long idMember) {
+        List<PembelianModel> hasilCariPembelian = new ArrayList<>();
+        List<PembelianModel> allPembelian = getListPembelian();
+
+        for (PembelianModel pembelian : allPembelian) {
+            if(pembelian.getMember().getId().equals(idMember)){
+                hasilCariPembelian.add(pembelian);
+            }
+        }
+        return  hasilCariPembelian;
     }
 
     public static class RandomString {

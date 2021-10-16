@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +16,8 @@ public class MemberController {
     @Qualifier("memberServiceImpl")
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private PembelianService pembelianService;
 
     @GetMapping("/member")
     public String viewAllmember(Model model){
@@ -48,6 +47,7 @@ public class MemberController {
             @PathVariable Long idMember,
             Model model
     ){
+
         MemberModel member = memberService.getMemberById(idMember);
         if (member != null){
             model.addAttribute( "member", member);
@@ -65,8 +65,23 @@ public class MemberController {
             Model model
     ){
         memberService.updateMember(member);
+        for (PembelianModel pembelian : member.getListPembelian()) {
+            String newInvoice = pembelianService.generateNoInvoice(pembelian);
+            pembelian.setNoInvoice(newInvoice);
+        }
+        memberService.updateMember(member);
+
         model.addAttribute("namaMember", member.getNamaMember());
+        model.addAttribute("listPembelian", member.getListPembelian());
         return "update-member";
     }
+
+    @GetMapping( "bonus/cari/member/paling-banyak")
+    public String cariBestMember(Model model) {
+        List<MemberModel> listTopMember = memberService.getBestMember(memberService.getListMember());
+        model.addAttribute("listTopMember", listTopMember);
+        return "coba-bonus";
+    }
+
 
 }

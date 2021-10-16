@@ -61,11 +61,11 @@ public class PembelianModel implements Serializable {
 //    List<BarangModel> listBarang;
 
 
-    @OneToMany(mappedBy = "pembelian", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pembelian", cascade = CascadeType.ALL)
     private List<PembelianBarangModel> listPembelianBarang;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "IdMember", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "IdMember")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MemberModel member;
 

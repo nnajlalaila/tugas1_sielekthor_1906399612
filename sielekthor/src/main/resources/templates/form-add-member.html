@@ -11,7 +11,7 @@
 <body>
 <style>
   .layout{
-    padding-top: 30px;
+    padding-top: 20px;
     padding-left: 450px;
     padding-right: 450px;
     padding-bottom: 50px;
@@ -34,11 +34,12 @@
 </style>
 
 <nav th:replace="fragments/fragment :: navbar"></nav>
+<br>
 <h2 class="text-center">Form Tambah Member</h2>
 <div class="layout">
   <div class="box">
     <form th:action="@{/member/tambah}"th:object="${member}" method = "POST">
-      <br><br>
+      <br>
       <div class="field" >Nama</div>
       <input required class="form-control" type="text" name="namaMember"/>
       <br>

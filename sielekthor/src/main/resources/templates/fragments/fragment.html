@@ -18,7 +18,7 @@
 </head>
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-warning">
-    <a class="navbar-brand font-weight-bold text-light" href="#">SIELEKTHOR</a>
+    <a class="navbar-brand font-weight-bold text-light" href="/">SIELEKTHOR</a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <a class="nav-item nav-link active"  th:href="@{/barang}" style="color: black" >
@@ -29,9 +29,18 @@
                 Pembelian
             </a>
 
-            <a class="nav-item nav-link active"   style="color: black">
-                Fitur Pembelian
+            <a class="nav-item nav-link active"  th:href="@{/member}" style="color: black">
+                Member
             </a>
+
+            <a class="nav-item nav-link active"   th:href="@{/cari/pembelian}" style="color: black">
+                Filter Pembelian
+            </a>
+            <a class="nav-item nav-link active"   th:href="@{/bonus/cari/member/paling-banyak}"  style="color: black">
+                Bonus
+            </a>
+
+
 
         </ul>
     </div>

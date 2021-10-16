@@ -36,7 +36,7 @@ public class TipeModel implements Serializable {
     @Column(nullable = false)
     private String deskripsiTipe;
 
-    @OneToMany(mappedBy = "tipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tipe", cascade = CascadeType.ALL)
     private List<BarangModel> listBarang;
 
 }

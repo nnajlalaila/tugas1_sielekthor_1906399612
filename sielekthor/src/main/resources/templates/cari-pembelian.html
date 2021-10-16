@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cari Pembelian</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<br>
+<h2 class="text-center">Cari Pembelian</h2>
+<div class="layout">
+  <div class="box">
+  <table class="table">
+    <form th:action="@{/cari/pembelian}" method="GET">
+      <br><br>
+      <div class="field left">Pembeli</div>
+      <select class="form-control" name="idMember">
+        <option disabled selected value> -- select an option -- </option>
+        <option th:each="member : ${listMember}"
+                th:value="${member.id}"
+                th:text="${member.namaMember}">
+        </option>
+      </select>
+      <br>
+      <div class="field left">
+        Pembayaran
+      </div>
+      <div class="form-check">
+        <input type="radio" id="tunai"   name="isCicilan" value="false">
+        <label class="form-check-label" for="tunai">
+          Tunai
+        </label>
+      </div>
+
+        <div class="form-check">
+          <input  type="radio" id="cicil" name="isCicilan" value="true">
+          <label class="form-check-label" for="cicil">
+            Cicilan
+          </label>
+        </div>
+      <br><br>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn text-light m-2" style="background-color: #ffc107">Cari</button>
+        <a th:href="@{/}" class="btn m-2" style="border-color: #ffc107">Kembali</a>
+      </div>
+    </form>
+  </table>
+  </div>
+    <div><h5 th:text="${message}" class="text-center font-weight-bold font-italic pb-2 text-danger"></h5></div>
+  </div>
+
+
+<div class="layout2">
+  <table class="table" th:if="${listPembelian.size()} > 0">
+    <thead>
+    <tr class="judul">
+      <th>No</th>
+      <th>No Invoice</th>
+      <th>Total Harga</th>
+      <th>Member</th>
+      <th>Jumlah Barang</th>
+      <th>Tanggal Pembelian</th>
+      <th>Aksi</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="pembelian, iterationStatus : ${listPembelian}"
+        th:style="${iterationStatus.even} ? 'background-color: #f7f7f7':'background-color: #d3d3d3'">
+      <td th:text="${iterationStatus.count}"></td>
+      <td th:text="${pembelian.noInvoice}"></td>
+      <td th:text="${pembelian.total}"></td>
+      <td th:text="${pembelian.member.namaMember}"></td>
+      <td th:text="${pembelian.listPembelianBarang.size()}"></td>
+      <td th:text="${#dates.format(pembelian.tanggalPembelian, 'EEE, dd MMM yyyy')}"></td>
+      <td>
+        <div class="align-items-center">
+          <a th:href="@{/pembelian/}+${pembelian.id}" class="btn btn-info">Lihat</a>
+          <a th:href="@{#}" class="btn btn-danger">Hapus</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+</div>
+</body>
+
+<style>
+  .layout{
+    padding-top: 20px;
+    padding-left: 450px;
+    padding-right: 450px;
+    padding-bottom: 50px;
+  }
+
+  .box{
+    box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding-right: 7%;
+    padding-left: 7%;
+  }
+
+  .tab{
+    text-align: right;
+  }
+
+
+  .judul{
+    background-color:#ffc107;
+    font-size: 18px;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .layout2{
+    padding-left: 180px;
+    padding-right: 220px;
+    padding-bottom: 50px;
+  }
+
+  exlusive {
+    width: 100%;
+    padding: 7px 15px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .field{
+    text-align: left;
+    color: #4e555b;
+  }
+</style>
+</html>

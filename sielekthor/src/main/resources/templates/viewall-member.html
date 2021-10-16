@@ -69,7 +69,6 @@
           <td th:text="${#dates.format(member.tanggalLahir, 'yyyy-MM-dd')}"></td>
           <td th:text="${member.tanggalPendaftaran}"></td>
           <td  th:text="${member.jenisKelamin} == 0 ? 'Laki-laki' : 'Perempuan' "></td>
-
           <td>
             <div class="align-items-center">
               <a th:href="@{/member/ubah/}+${member.id}" class="btn btn-primary">Ubah</a>

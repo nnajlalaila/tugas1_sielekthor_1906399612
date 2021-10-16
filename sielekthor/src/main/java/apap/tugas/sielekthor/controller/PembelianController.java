@@ -1,7 +1,6 @@
 package apap.tugas.sielekthor.controller;
 import apap.tugas.sielekthor.model.*;
 import apap.tugas.sielekthor.service.*;
-import jdk.incubator.foreign.MappedMemorySegment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import org.springframework.validation.BindingResult;
@@ -61,28 +61,8 @@ public class PembelianController {
     @GetMapping("/pembelian/tambah")
     public String addPembelianForm(Model model){
         PembelianModel pembelian = new PembelianModel();
-        PembelianBarangModel pembelianBarang = new PembelianBarangModel();
-//        BarangModel barang = new BarangModel();
-        List<PembelianBarangModel> listPembelianBarang = new ArrayList<>();
-        Date tanggalPembelian = new Date();
-        pembelian.setTanggalPembelian(tanggalPembelian);
-
-        pembelianBarang.setPembelian(pembelian);
-        pembelian.setListPembelianBarang(listPembelianBarang);
-//        barang.setListPembelianBarang(listPembelianBarang);
-//
-//        System.out.println("DI GET MEPING");
-//        System.out.println(pembelian);
-//        for (PembelianBarangModel i:pembelian.getListPembelianBarang()
-//        ) {
-//            System.out.println("DALAM LOOP");
-//            System.out.println(pembelian);
-//            System.out.println(i);
-//            System.out.println(i.getBarang());
-//        }
 
         model.addAttribute("pembelian", pembelian);
-        model.addAttribute("pembelianBarang", pembelianBarang);
         model.addAttribute("allBarang", barangService.getListBarang());
         model.addAttribute("listMember", memberService.getListMember());
         return "form-add-pembelian";
@@ -95,41 +75,11 @@ public class PembelianController {
             BindingResult bindingResult,
             Model model
     ){
-//        System.out.println(pembelian);
-//        System.out.println("DI TAMBAH SEBELUM");
-//        for (PembelianBarangModel i:pembelian.getListPembelianBarang()
-//        ) {
-//            System.out.println(i);
-////            System.out.println(i.getBarang());
-//        }
         PembelianBarangModel pembelianBarang = new PembelianBarangModel();
         if (pembelian.getListPembelianBarang() == null) {
             pembelian.setListPembelianBarang(new ArrayList<PembelianBarangModel>());
         }
-//        Date tanggalPembelian = new Date();
-//        pembelian.setTanggalPembelian(tanggalPembelian);
-        for (PembelianBarangModel i : pembelian.getListPembelianBarang()) {
-            Integer jumlahGaransi= i.getBarang().getJumlahGaransi();
-//            Date d = new Date(i.getPembelian(). + 86400000* jumlahGaransi);
-//            i.setTanggalGaransi(d);
-            pembelianBarangService.addPembelianBarang(i);
-        }
-        pembelianBarang.setPembelian(pembelian);
         pembelian.getListPembelianBarang().add(pembelianBarang);
-        System.out.println("DI TAMBAH");
-        for (PembelianBarangModel i: pembelian.getListPembelianBarang()
-             ) {
-            System.out.println(i);
-            System.out.println(i.getBarang());
-            System.out.println(i.getPembelian());
-        }
-//        Integer totalHarga = pembelianService.jumlah(pembelianBarangHash);
-//        pembelian.setNoInvoice(noInvoice);
-//        pembelian.setTanggalPembelian(LocalDate.now());
-//        pembelian.setTotal(totalHarga);
-//        LocalDate tanggalPembelian = pembelian.getTanggalPembelian().plusDays(barang.getJumlahGaransi());
-//        pembelianBarang.setTanggalGaransi(tanggalPembelian);
-
         model.addAttribute("pembelian", pembelian);
         model.addAttribute("pembelianBarang", pembelianBarang);
         model.addAttribute("allBarang", barangService.getListBarang());
@@ -143,9 +93,12 @@ public class PembelianController {
             final BindingResult bindingResult, final HttpServletRequest req,
             Model model
     ){
+
         final Integer rowId = Integer.valueOf(req.getParameter("deleteRow"));
+        List<PembelianBarangModel> listPembelianBarang = pembelianBarangService.getPembelianBarangList();
         pembelian.getListPembelianBarang().remove(rowId.intValue());
         model.addAttribute("pembelian", pembelian);
+        model.addAttribute("listPembelianBarang", pembelian.getListPembelianBarang());
         model.addAttribute("listMember", memberService.getListMember());
         model.addAttribute("allBarang", barangService.getListBarang());
         return "form-add-pembelian";
@@ -154,34 +107,35 @@ public class PembelianController {
 
     @PostMapping(value="/pembelian/tambah/", params = {"save"})
     private String save(@ModelAttribute PembelianModel pembelian, Model model) {
-        System.out.println(pembelian);
-        System.out.println("DI SAVE");
-
+        pembelian.setTanggalPembelian(new Date());
+        Integer total = 0;
+        String noInvoice = pembelianService.generateNoInvoice(pembelian);
+        pembelian.setNoInvoice(noInvoice);
+        for (PembelianBarangModel pembelianBarang : pembelian.getListPembelianBarang()) {
+            Date tglPembelian = pembelian.getTanggalPembelian();
+            LocalDate localDate = tglPembelian.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Long jumlahGaransi = Long.valueOf(pembelianBarang.getBarang().getJumlahGaransi());
+            System.out.println(jumlahGaransi);
+            LocalDate tanggalGaransi = localDate.plusDays(jumlahGaransi);
+            Date tanggalGaransiFix = Date.from(tanggalGaransi.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            pembelianBarang.setTanggalGaransi(tanggalGaransiFix);
+        }
 
         for (PembelianBarangModel pembelianBarang : pembelian.getListPembelianBarang()) {
-            Integer total = pembelianBarang.getQuantity() * pembelianBarang.getBarang().getHargaBarang();
-            pembelianBarang.getPembelian().setTotal(total);
-            pembelianBarang.setPembelian(pembelian);
+            total += pembelianBarang.getQuantity () * pembelianBarang.getBarang().getHargaBarang();
         }
-
-        String noInvoice = pembelianService.getNoInvoice(pembelian);
-        pembelian.setNoInvoice(noInvoice);
+        pembelian.setTotal(total);
         pembelianService.addPembelian(pembelian);
-
-//        for (PembelianBarangModel i : pembelian.getListPembelianBarang()) {
-//           pembelianBarangService.addPembelianBarang(i);
-//        }
-
-        for (PembelianBarangModel i: pembelian.getListPembelianBarang()
-        ) {
-            System.out.println(i);
-            System.out.println(i.getPembelian());
-            System.out.println(i.getBarang());
-            System.out.println(i.getBarang().getKodeBarang());
-            System.out.println(i.getBarang().getHargaBarang());
+        for (PembelianBarangModel pembelianBarang : pembelian.getListPembelianBarang()) {
+            PembelianBarangModel newPB = new PembelianBarangModel();
+            newPB.setQuantity(pembelianBarang.getQuantity());
+            newPB.setPembelian(pembelian);
+            newPB.setBarang(pembelianBarang.getBarang());
+            newPB.setTanggalGaransi(pembelianBarang.getTanggalGaransi());
+            newPB.setPembelian(pembelianService.getPembelianById(pembelian.getId()));
+            pembelianBarangService.addPembelianBarang(newPB);
         }
-
-
+            model.addAttribute("pembelian", pembelian);
         return "add-pembelian";
     }
 
@@ -197,17 +151,74 @@ public class PembelianController {
         return "delete-pembelian";
     }
 
-    ///cari/pembelian?idMember={idMember}&tipePembayaran={isCicilan}
-
-    @GetMapping("/cari/pembelian?idMember={idMember}&tipePembayaran={isCicilan}")
+    @GetMapping("/cari/pembelian")
     public String cariPembelian(
             @RequestParam(required = false, value = "idMember") Long idMember,
             @RequestParam(required = false,value = "isCicilan") Boolean isCicilan,
             Model model
     ){
-       return "home";
+        System.out.println("MASUK CONTROLLER");
+        List<PembelianModel> hasil = new ArrayList<>();
+//        MemberModel member = memberService.getMemberById(idMember);
+        List<MemberModel> listMember = memberService.getListMember();
+//        List<PembelianModel> listPembelian = pembelianService.getListPembelian();
+
+        if ( idMember != null && isCicilan != null) {
+            System.out.println("dUADAU TIDAK NULL");
+            hasil = pembelianService.cariPembelian(idMember, isCicilan);
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listPembelian", hasil);
+            model.addAttribute("listMember",listMember);
+           ;
+            return "cari-pembelian";
+        }
+
+        else if ( idMember != null && isCicilan == null) {
+            hasil = pembelianService.cariPembelianIdMember(idMember);
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listPembelian", hasil);
+            model.addAttribute("listMember",listMember);
+            System.out.println("MEMBER TDK NULL");
+            return "cari-pembelian";
+        }
+
+        else if ( idMember == null && isCicilan != null) {
+            hasil = pembelianService.cariPembelianIsCash(isCicilan);
+            if (hasil.size() == 0){
+                String messages = "Hasil tidak ditemukan";
+                model.addAttribute("message", messages );
+            }
+            model.addAttribute("listPembelian", hasil);
+            model.addAttribute("listMember",listMember);
+            System.out.println("IS CICILAN");
+            return "cari-pembelian";
+        }
+            model.addAttribute("listPembelian", hasil);
+            model.addAttribute("listMember",listMember);
+            System.out.println("----------");
+            return "cari-pembelian";
+
 
     }
+
+
+
+
+//    @GetMapping(value = "/bonus/cari/member/paling-banyak")
+//    public String cariMember(Model model) {
+//        List<PembelianBarangModel> listPembelianBarang = pembelianBarangService.getPembelianBarangList();
+//        List<PembelianBarangModel> listPilothu = pembelianBarangService.pilotBulanIni(listPilotPenerbangan);
+//        List<PilotModel> listPilot = pilotPenerbanganService.getListPilot(listPilothu);
+//        model.addAttribute("listPilot", listPilot);
+//        return "cari-pilotbulanini";
+//
+//    }
 }
 
 

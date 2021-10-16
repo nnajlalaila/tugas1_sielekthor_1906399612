@@ -58,16 +58,13 @@ public class BarangModel implements Serializable {
     @Column(nullable = false)
     private Integer hargaBarang;
 
-    @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "barang", cascade = CascadeType.ALL)
     private List<PembelianBarangModel> listPembelianBarang;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "IdTipe", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "IdTipe", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TipeModel tipe;
 
-//
-//    @ManyToMany(mappedBy = "listBarang")
-//    private List<PembelianModel> listPembelian;
 
 }
